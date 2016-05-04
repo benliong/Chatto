@@ -47,7 +47,7 @@ public class TextMessageCollectionViewCellDefaultStyle: TextMessageCollectionVie
     }
 
     public func textColor(viewModel viewModel: TextMessageViewModelProtocol, isSelected: Bool) -> UIColor {
-        return viewModel.isIncoming ? UIColor.blackColor() : UIColor.whiteColor()
+        return UIColor.blackColor()
     }
 
     public func textInsets(viewModel viewModel: TextMessageViewModelProtocol, isSelected: Bool) -> UIEdgeInsets {
