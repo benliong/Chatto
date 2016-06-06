@@ -205,6 +205,14 @@ extension ChatInputBar: UITextViewDelegate {
     public func textViewDidChange(textView: UITextView) {
         self.sendButton.enabled = !textView.text.isEmpty
     }
+    
+    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            self.buttonTapped(self.sendButton)
+            return false
+        }
+        return true
+    }
 }
 
 class SingleViewContainerView: UIView {
