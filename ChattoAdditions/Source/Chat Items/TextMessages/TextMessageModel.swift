@@ -30,10 +30,13 @@ public protocol TextMessageModelProtocol: DecoratedMessageModelProtocol {
 
 public class TextMessageModel: TextMessageModelProtocol {
     public let messageModel: MessageModelProtocol
-    public let text: String
+    var _text:String = ""
+    public var text: String {
+        return (isIncoming ? "in:" : "out:").stringByAppendingString(_text)
+    }
     public init(messageModel: MessageModelProtocol, text: String) {
         self.messageModel = messageModel
-        self.text = text
+        self._text = text
     }
     // This should be covered by DecoratedMessageModelProtocol, but compiler crashes without this (Xcode 7.1)
     public var uid: String { return self.messageModel.uid }

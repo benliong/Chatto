@@ -58,11 +58,10 @@ public class TextMessagePresenter<ViewModelBuilderT, InteractionHandlerT where
 
     public override class func registerCells(collectionView: UICollectionView) {
         collectionView.registerClass(TextMessageCollectionViewCell.self, forCellWithReuseIdentifier: "text-message-incoming")
-        collectionView.registerClass(TextMessageCollectionViewCell.self, forCellWithReuseIdentifier: "text-message-outcoming")
     }
 
     public override func dequeueCell(collectionView collectionView: UICollectionView, indexPath: NSIndexPath) -> UICollectionViewCell {
-        let identifier = self.messageViewModel.isIncoming ? "text-message-incoming" : "text-message-outcoming"
+        let identifier = "text-message-incoming"
         return collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath)
     }
 
@@ -73,6 +72,7 @@ public class TextMessagePresenter<ViewModelBuilderT, InteractionHandlerT where
         }
 
         super.configureCell(cell, decorationAttributes: decorationAttributes, animated: animated) { () -> Void in
+            self.messageViewModel.showsTail = false
             cell.layoutCache = self.layoutCache
             cell.textMessageViewModel = self.messageViewModel
             cell.textMessageStyle = self.textCellStyle

@@ -41,7 +41,7 @@ func createTextMessageModel(uid: String, text: String, isIncoming: Bool) -> Text
 
 func createMessageModel(uid: String, isIncoming: Bool, type: String) -> MessageModel {
     let senderId = isIncoming ? "1" : "2"
-    let messageStatus = isIncoming || arc4random_uniform(100) % 3 == 0 ? MessageStatus.Success : .Failed
+    let messageStatus = MessageStatus.Success
     let messageModel = MessageModel(uid: uid, senderId: senderId, type: type, isIncoming: isIncoming, date: NSDate(), status: messageStatus)
     return messageModel
 }
@@ -54,7 +54,7 @@ func createPhotoMessageModel(uid: String, image: UIImage, size: CGSize, isIncomi
 
 class FakeMessageFactory {
     static let demoTexts = [
-        "Lorem ipsum dolor sit amet 😇, https://github.com/badoo/Chatto consectetur adipiscing elit , sed do eiusmod tempor incididunt 07400000000 📞 ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore https://github.com/badoo/Chatto eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 07400000000 non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "SYSTEM MESSAGE\n\n⚠️ Benjimaru (Owner) has not deposited the item within the booked time. Please chat to arrange alternative pick-up arrangement.",
     ]
 
     class func createChatItem(uid: String) -> MessageModelProtocol {
@@ -63,18 +63,18 @@ class FakeMessageFactory {
     }
 
     class func createChatItem(uid: String, isIncoming: Bool) -> MessageModelProtocol {
-        if arc4random_uniform(100) % 2 == 0 {
+//        if arc4random_uniform(100) % 2 == 0 {
             return self.createTextMessageModel(uid, isIncoming: isIncoming)
-        } else {
-            return self.createPhotoMessageModel(uid, isIncoming: isIncoming)
-        }
+//        } else {
+//            return self.createPhotoMessageModel(uid, isIncoming: isIncoming)
+//        }
     }
 
     class func createTextMessageModel(uid: String, isIncoming: Bool) -> TextMessageModel {
-        let incomingText: String = isIncoming ? "incoming" : "outgoing"
-        let maxText = self.demoTexts.randomItem()
-        let length: Int = 10 + Int(arc4random_uniform(300))
-        let text = "\(maxText.substringToIndex(maxText.startIndex.advancedBy(length))) incoming:\(incomingText), #:\(uid)"
+//        let incomingText: String = isIncoming ? "incoming" : "outgoing"
+//        let maxText = self.demoTexts.randomItem()
+//        let length: Int = 10 + Int(arc4random_uniform(40))
+        let text = demoTexts.first!
         return ChattoApp.createTextMessageModel(uid, text: text, isIncoming: isIncoming)
     }
 

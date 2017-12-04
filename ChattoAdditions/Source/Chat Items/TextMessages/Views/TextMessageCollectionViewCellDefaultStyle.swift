@@ -39,7 +39,7 @@ public class TextMessageCollectionViewCellDefaultStyle: TextMessageCollectionVie
     }()
 
     lazy var font = {
-        return UIFont.systemFontOfSize(16)
+        return UIFont.systemFontOfSize(12)
     }()
 
     public func textFont(viewModel viewModel: TextMessageViewModelProtocol, isSelected: Bool) -> UIFont {
@@ -47,11 +47,11 @@ public class TextMessageCollectionViewCellDefaultStyle: TextMessageCollectionVie
     }
 
     public func textColor(viewModel viewModel: TextMessageViewModelProtocol, isSelected: Bool) -> UIColor {
-        return UIColor.blackColor()
+        return UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)
     }
 
     public func textInsets(viewModel viewModel: TextMessageViewModelProtocol, isSelected: Bool) -> UIEdgeInsets {
-        return viewModel.isIncoming ? UIEdgeInsets(top: 10, left: 19, bottom: 10, right: 15) : UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 19)
+        return UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
     }
 
     public func bubbleImageBorder(viewModel viewModel: TextMessageViewModelProtocol, isSelected: Bool) -> UIImage? {
@@ -77,8 +77,7 @@ public class TextMessageCollectionViewCellDefaultStyle: TextMessageCollectionVie
     }
 
     private func createImage(templateImage image: UIImage, isIncoming: Bool, status: MessageViewModelStatus, isSelected: Bool) -> UIImage {
-        var color = isIncoming ? self.baseStyle.baseColorIncoming : self.baseStyle.baseColorOutgoing
-
+        var color = UIColor.bma_color(rgb: 0xDEF1E2)
         switch status {
         case .Success:
             break
@@ -94,7 +93,7 @@ public class TextMessageCollectionViewCellDefaultStyle: TextMessageCollectionVie
     }
 
     private func imageKey(isIncoming isIncoming: Bool, status: MessageViewModelStatus, showsTail: Bool, isSelected: Bool) -> String {
-        let directionKey = isIncoming ? "incoming" : "outgoing"
+        let directionKey = "incoming"
         let tailKey = showsTail ? "tail" : "notail"
         let statusKey = self.statusKey(status)
         let highlightedKey = isSelected ? "highlighted" : "normal"

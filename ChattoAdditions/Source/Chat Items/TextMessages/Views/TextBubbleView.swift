@@ -104,6 +104,13 @@ public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, Backg
         textView.exclusiveTouch = true
         textView.textContainerInset = UIEdgeInsetsZero
         textView.textContainer.lineFragmentPadding = 0
+        if #available(iOS 8.2, *) {
+            textView.font = UIFont.systemFontOfSize(12, weight: UIFontWeightMedium)
+        } else {
+            // Fallback on earlier versions
+        }
+        textView.textColor = UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)
+
         return textView
     }()
 
@@ -145,6 +152,11 @@ public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, Backg
                 NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue
             ]
         }
+//        self.bubbleImageView.contentMode = .ScaleToFill
+//        self.bubbleImageView.clipsToBounds = true
+        self.bubbleImageView.hidden = true
+        self.layer.cornerRadius = 3
+        self.layer.masksToBounds = true
         if self.bubbleImageView.image != bubbleImage { self.bubbleImageView.image = bubbleImage}
         if self.borderImageView.image != borderImage { self.borderImageView.image = borderImage }
     }
@@ -162,7 +174,12 @@ public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, Backg
         super.layoutSubviews()
         let layout = self.calculateTextBubbleLayout(preferredMaxLayoutWidth: self.preferredMaxLayoutWidth)
         self.textView.bma_rect = layout.textFrame
+//        self.textView.backgroundColor = UIColor.purpleColor()
+        self.textView.textAlignment = .Center
         self.bubbleImageView.bma_rect = layout.bubbleFrame
+        debugPrint("Bubble Image View Frame = \(self.bubbleImageView.frame)")
+        debugPrint("TextView          Frame = \(self.textView.frame)")
+        debugPrint("PreferredMaxLayoutWidth = \(self.preferredMaxLayoutWidth)")
         self.borderImageView.bma_rect = self.bubbleImageView.bounds
     }
 
@@ -223,11 +240,12 @@ private final class TextBubbleLayoutModel {
 
     func calculateLayout() {
         let textHorizontalInset = self.layoutContext.textInsets.bma_horziontalInset
-        let maxTextWidth = self.layoutContext.preferredMaxLayoutWidth - textHorizontalInset
+        let maxTextWidth = self.layoutContext.preferredMaxLayoutWidth
         let textSize = self.textSizeThatFitsWidth(maxTextWidth)
-        let bubbleSize = textSize.bma_outsetBy(dx: textHorizontalInset, dy: self.layoutContext.textInsets.bma_verticalInset)
+        let bubbleSize = CGSize(width: maxTextWidth, height: textSize.height+20)
         self.bubbleFrame = CGRect(origin: CGPoint.zero, size: bubbleSize)
-        self.textFrame = UIEdgeInsetsInsetRect(self.bubbleFrame, self.layoutContext.textInsets)
+        self.textFrame = UIEdgeInsetsInsetRect(CGRect(origin: CGPoint.zero, size: CGSize(width: textSize.width, height: textSize.height+20)), UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8))
+        self.textFrame = CGRect(x: self.textFrame.origin.x, y: self.textFrame.origin.y, width: maxTextWidth - 16, height: self.textFrame.size.height)
         self.size = bubbleSize
     }
 

@@ -35,7 +35,7 @@ class ConversationsViewController: UITableViewController {
         if segue.identifier == "0 messages" {
             initialCount = 0
         } else if segue.identifier == "2 messages" {
-            initialCount = 2
+            initialCount = 1
         } else if segue.identifier == "10000 messages" {
             initialCount = 10000
         } else if segue.identifier == "overview" {

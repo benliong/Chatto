@@ -191,6 +191,7 @@ public class BaseMessageCollectionViewCell<BubbleViewType where BubbleViewType:U
         let layoutModel = self.calculateLayout(availableWidth: self.contentView.bounds.width)
         self.failedButton.bma_rect = layoutModel.failedViewFrame
         self.bubbleView.bma_rect = layoutModel.bubbleViewFrame
+        self.bubbleView.backgroundColor = UIColor.bma_color(rgb: 0xDEF1E2)
         self.bubbleView.preferredMaxLayoutWidth = layoutModel.preferredMaxWidthForBubble
         self.bubbleView.layoutIfNeeded()
 
@@ -201,13 +202,13 @@ public class BaseMessageCollectionViewCell<BubbleViewType where BubbleViewType:U
             let accessoryViewWidth = CGRectGetWidth(accessoryView.bounds)
             let accessoryViewMargin: CGFloat = 10
             let leftDisplacement = max(0, min(self.timestampMaxVisibleOffset, accessoryViewWidth + accessoryViewMargin))
-            var contentViewframe = self.contentView.frame
-            if self.messageViewModel.isIncoming {
-                contentViewframe.origin = CGPoint.zero
-            } else {
-                contentViewframe.origin.x = -leftDisplacement
-            }
-            self.contentView.frame = contentViewframe
+//            var contentViewframe = self.contentView.frame
+//            if self.messageViewModel.isIncoming {
+//                contentViewframe.origin = CGPoint.zero
+//            } else {
+//                contentViewframe.origin.x = -leftDisplacement
+//            }
+//            self.contentView.frame = contentViewframe
             accessoryView.center = CGPoint(x: CGRectGetWidth(self.bounds) - leftDisplacement + accessoryViewWidth / 2, y: self.contentView.center.y)
         }
     }
@@ -322,9 +323,10 @@ struct BaseMessageLayoutModel {
         let horizontalMargin = parameters.horizontalMargin
         let horizontalInterspacing = parameters.horizontalInterspacing
 
-        let preferredWidthForBubble = containerWidth * parameters.maxContainerWidthPercentageForBubbleView
-        let bubbleSize = bubbleView.sizeThatFits(CGSize(width: preferredWidthForBubble, height: CGFloat.max))
-        let containerRect = CGRect(origin: CGPoint.zero, size: CGSize(width: containerWidth, height: bubbleSize.height))
+        let preferredWidthForBubble = containerWidth - 74
+        var bubbleSize = bubbleView.sizeThatFits(CGSize(width: preferredWidthForBubble, height: CGFloat.max))
+        bubbleSize = CGSize(width: preferredWidthForBubble, height: bubbleSize.height)
+        let containerRect = CGRect(origin: CGPoint.zero, size: bubbleSize)
 
 
         self.bubbleViewFrame = bubbleSize.bma_rect(inContainer: containerRect, xAlignament: .Center, yAlignment: .Center, dx: 0, dy: 0)
@@ -333,28 +335,21 @@ struct BaseMessageLayoutModel {
         // Adjust horizontal positions
 
         var currentX: CGFloat = 0
-        if isIncoming {
-            currentX = horizontalMargin
-            if isFailed {
-                self.failedViewFrame.origin.x = currentX
-                currentX += failedButtonSize.width
-                currentX += horizontalInterspacing
-            } else {
-                self.failedViewFrame.origin.x = -failedButtonSize.width
-            }
+//        if isIncoming {
+//            currentX = horizontalMargin
+//            if isFailed {
+//                self.failedViewFrame.origin.x = currentX
+//                currentX += failedButtonSize.width
+//                currentX += horizontalInterspacing
+//            } else {
+//                self.failedViewFrame.origin.x = -failedButtonSize.width
+//            }
+//            self.bubbleViewFrame.origin.x = currentX
+//        } else {
+//            currentX = containerRect.maxX - horizontalMargin
+            currentX += (containerWidth - bubbleSize.width) / 2
             self.bubbleViewFrame.origin.x = currentX
-        } else {
-            currentX = containerRect.maxX - horizontalMargin
-            if isFailed {
-                currentX -= failedButtonSize.width
-                self.failedViewFrame.origin.x = currentX
-                currentX -= horizontalInterspacing
-            } else {
-                self.failedViewFrame.origin.x = containerRect.width - -failedButtonSize.width
-            }
-            currentX -= bubbleSize.width
-            self.bubbleViewFrame.origin.x = currentX
-        }
+//        }
 
         self.size = containerRect.size
         self.preferredMaxWidthForBubble = preferredWidthForBubble

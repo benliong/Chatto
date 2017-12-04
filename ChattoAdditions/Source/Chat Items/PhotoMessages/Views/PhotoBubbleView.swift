@@ -245,7 +245,7 @@ private class PhotoBubbleLayoutModel {
     func calculateLayout() {
         let photoSize = self.layoutContext.photoSize
         self.photoFrame = CGRect(origin: CGPoint.zero, size: photoSize)
-        let offsetX: CGFloat = 0.5 * self.layoutContext.tailWidth * (self.layoutContext.isIncoming ? 1.0 : -1.0)
+        let offsetX: CGFloat = 0.5 * self.layoutContext.tailWidth * 1.0
         self.visualCenter = self.photoFrame.bma_center.bma_offsetBy(dx: offsetX, dy: 0)
         self.size = photoSize
     }
