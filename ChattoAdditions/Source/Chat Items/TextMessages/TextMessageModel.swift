@@ -32,7 +32,7 @@ public class TextMessageModel: TextMessageModelProtocol {
     public let messageModel: MessageModelProtocol
     var _text:String = ""
     public var text: String {
-        return (isIncoming ? "in:" : "out:").stringByAppendingString(_text)
+        return _text
     }
     public init(messageModel: MessageModelProtocol, text: String) {
         self.messageModel = messageModel

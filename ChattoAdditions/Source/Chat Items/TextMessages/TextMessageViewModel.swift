@@ -26,10 +26,24 @@ import Foundation
 
 public protocol TextMessageViewModelProtocol: DecoratedMessageViewModelProtocol {
     var text: String { get }
+    var attributedString: NSAttributedString { get }
 }
 
 public class TextMessageViewModel: TextMessageViewModelProtocol {
     public let text: String
+    public var attributedString: NSAttributedString {
+        var string = NSMutableAttributedString()
+        if #available(iOS 8.2, *) {
+            string = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName:UIFont.systemFontOfSize(12, weight: UIFontWeightRegular), NSForegroundColorAttributeName: UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)])
+            let range = NSString(string: text).rangeOfString("SYSTEM MESSAGE")
+            if range.location != NSNotFound {
+                string.setAttributes([NSFontAttributeName:UIFont.systemFontOfSize(10, weight: UIFontWeightMedium), NSForegroundColorAttributeName: UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)], range: range)
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+        return string
+    }
     public let messageViewModel: MessageViewModelProtocol
 
     public init(text: String, messageViewModel: MessageViewModelProtocol) {

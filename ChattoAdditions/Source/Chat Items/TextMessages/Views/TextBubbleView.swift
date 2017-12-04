@@ -104,12 +104,6 @@ public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, Backg
         textView.exclusiveTouch = true
         textView.textContainerInset = UIEdgeInsetsZero
         textView.textContainer.lineFragmentPadding = 0
-        if #available(iOS 8.2, *) {
-            textView.font = UIFont.systemFontOfSize(12, weight: UIFontWeightMedium)
-        } else {
-            // Fallback on earlier versions
-        }
-        textView.textColor = UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)
 
         return textView
     }()
@@ -144,7 +138,8 @@ public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, Backg
         let borderImage = self.style.bubbleImageBorder(viewModel: self.textMessageViewModel, isSelected: self.selected)
 
         if self.textView.font != font { self.textView.font = font}
-        if self.textView.text != viewModel.text {self.textView.text = viewModel.text}
+        self.textView.attributedText = viewModel.attributedString
+        
         if self.textView.textColor != textColor {
             self.textView.textColor = textColor
             self.textView.linkTextAttributes = [
