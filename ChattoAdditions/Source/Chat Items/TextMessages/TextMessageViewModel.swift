@@ -35,9 +35,19 @@ public class TextMessageViewModel: TextMessageViewModelProtocol {
         var string = NSMutableAttributedString()
         if #available(iOS 8.2, *) {
             string = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName:UIFont.systemFontOfSize(12, weight: UIFontWeightRegular), NSForegroundColorAttributeName: UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)])
-            let range = NSString(string: text).rangeOfString("SYSTEM MESSAGE")
+            var range = NSString(string: text).rangeOfString("SYSTEM MESSAGE")
             if range.location != NSNotFound {
                 string.setAttributes([NSFontAttributeName:UIFont.systemFontOfSize(10, weight: UIFontWeightMedium), NSForegroundColorAttributeName: UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)], range: range)
+            }
+            var range2 = NSString(string: text).rangeOfString("LEARN MORE ABOUT LOCKERS")
+            if range2.location != NSNotFound {
+                string.addAttribute(NSLinkAttributeName, value: "http://www.google.com", range: range2)
+                string.enumerateAttributesInRange(range2, options: .Reverse, usingBlock: { (attributes, range, stop) in
+                    if let _ = attributes[NSLinkAttributeName] {
+                        string.removeAttribute(NSFontAttributeName, range: range)
+                        string.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(14, weight: UIFontWeightMedium), range: range2)
+                    }
+                })
             }
         } else {
             // Fallback on earlier versions

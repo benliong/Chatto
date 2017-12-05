@@ -325,7 +325,7 @@ struct BaseMessageLayoutModel {
 
         let preferredWidthForBubble = containerWidth - 74
         var bubbleSize = bubbleView.sizeThatFits(CGSize(width: preferredWidthForBubble, height: CGFloat.max))
-        bubbleSize = CGSize(width: preferredWidthForBubble, height: bubbleSize.height)
+        bubbleSize = CGSize(width: preferredWidthForBubble, height: bubbleSize.height+10)
         let containerRect = CGRect(origin: CGPoint.zero, size: bubbleSize)
 
 

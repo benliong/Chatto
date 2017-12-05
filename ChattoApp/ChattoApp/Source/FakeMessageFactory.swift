@@ -54,7 +54,7 @@ func createPhotoMessageModel(uid: String, image: UIImage, size: CGSize, isIncomi
 
 class FakeMessageFactory {
     static let demoTexts = [
-        "SYSTEM MESSAGE\n\n⚠️ Benjimaru (Owner) has not deposited the item within the booked time. Please chat to arrange alternative pick-up arrangement.",
+        "SYSTEM MESSAGE\n\n⚠️ Benjimaru (Owner) has not deposited the item within the booked time. Please chat to arrange alternative pick-up arrangement.\n\nLEARN MORE ABOUT LOCKERS",
     ]
 
     class func createChatItem(uid: String) -> MessageModelProtocol {
