@@ -30,6 +30,7 @@ public class BaseMessageCollectionViewCellDefaultSyle: BaseMessageCollectionView
 
     lazy var baseColorIncoming = UIColor.bma_color(rgb: 0xE6E7E8)
     lazy var baseColorOutgoing = UIColor.bma_color(rgb: 0xFDDBE3)
+    lazy var baseColorSystemMessage = UIColor.bma_color(rgb: 0xDEF1E2)
 
     lazy var borderIncomingTail: UIImage = {
         return UIImage(named: "bubble-incoming-border-tail", inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil)!

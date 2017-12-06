@@ -33,6 +33,12 @@ extension Array {
     }
 }
 
+func createSystemMessageModel(uid:String, text: String, ctaType: String? = nil) -> SystemMessageModel {
+    let messageModel = createMessageModel(uid, isIncoming: true, type: SystemMessageModel.chatItemType)
+    let systemMessageModel = SystemMessageModel(messageModel: messageModel, text: text, ctaType: ctaType)
+    return systemMessageModel
+}
+
 func createTextMessageModel(uid: String, text: String, isIncoming: Bool) -> TextMessageModel {
     let messageModel = createMessageModel(uid, isIncoming: isIncoming, type: TextMessageModel.chatItemType)
     let textMessageModel = TextMessageModel(messageModel: messageModel, text: text)
@@ -56,6 +62,10 @@ class FakeMessageFactory {
     static let demoTexts = [
         "Lorem ipsum dolor sit amet 😇, https://github.com/badoo/Chatto consectetur adipiscing elit , sed do eiusmod tempor incididunt 07400000000 📞 ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore https://github.com/badoo/Chatto eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 07400000000 non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     ]
+    
+    static let systemTexts = [
+        "SYSTEM MESSAGE\n\n⚠️ Benjimaru (Owner) has not deposited the item within the booked time. Please chat to arrange alternative pick-up arrangement.\n\nLEARN MORE ABOUT LOCKERS",
+    ]
 
     class func createChatItem(uid: String) -> MessageModelProtocol {
         let isIncoming: Bool = arc4random_uniform(100) % 2 == 0
@@ -63,11 +73,11 @@ class FakeMessageFactory {
     }
 
     class func createChatItem(uid: String, isIncoming: Bool) -> MessageModelProtocol {
-        if arc4random_uniform(100) % 2 == 0 {
-            return self.createTextMessageModel(uid, isIncoming: isIncoming)
-        } else {
-            return self.createPhotoMessageModel(uid, isIncoming: isIncoming)
-        }
+//        if arc4random_uniform(100) % 2 == 0 {
+//            return self.createTextMessageModel(uid, isIncoming: isIncoming)
+//        } else {
+            return self.createSystemMessageModel(uid)
+//        }
     }
 
     class func createTextMessageModel(uid: String, isIncoming: Bool) -> TextMessageModel {
@@ -77,7 +87,13 @@ class FakeMessageFactory {
         let text = "\(maxText.substringToIndex(maxText.startIndex.advancedBy(length))) incoming:\(incomingText), #:\(uid)"
         return ChattoApp.createTextMessageModel(uid, text: text, isIncoming: isIncoming)
     }
-
+    
+    class func createSystemMessageModel(uid: String) -> SystemMessageModel {
+        let showCTA:Bool = arc4random_uniform(100) % 2 == 0
+        let text = self.systemTexts.first!
+        return ChattoApp.createSystemMessageModel(uid, text: text, ctaType: showCTA ? "PPB_LEARN_MORE" : nil)
+    }
+    
     class func createPhotoMessageModel(uid: String, isIncoming: Bool) -> PhotoMessageModel {
         var imageSize = CGSize.zero
         switch arc4random_uniform(100) % 3 {
@@ -109,6 +125,12 @@ class FakeMessageFactory {
 extension TextMessageModel {
     static var chatItemType: ChatItemType {
         return "text"
+    }
+}
+
+extension SystemMessageModel {
+    static var chatItemType: ChatItemType {
+        return "system"
     }
 }
 

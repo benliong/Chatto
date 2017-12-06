@@ -44,6 +44,24 @@ class TextMessageHandler: BaseMessageInteractionHandlerProtocol {
     }
 }
 
+class SystemMessageHandler: BaseMessageInteractionHandlerProtocol {
+    private let baseHandler: BaseMessageHandler
+    init (baseHandler: BaseMessageHandler) {
+        self.baseHandler = baseHandler
+    }
+    func userDidTapOnFailIcon(viewModel viewModel: SystemMessageViewModel) {
+        self.baseHandler.userDidTapOnFailIcon(viewModel: viewModel)
+    }
+    
+    func userDidTapOnBubble(viewModel viewModel: SystemMessageViewModel) {
+        self.baseHandler.userDidTapOnBubble(viewModel: viewModel)
+    }
+    
+    func userDidLongPressOnBubble(viewModel viewModel: SystemMessageViewModel) {
+        self.baseHandler.userDidLongPressOnBubble(viewModel: viewModel)
+    }
+}
+
 class PhotoMessageHandler: BaseMessageInteractionHandlerProtocol {
     private let baseHandler: BaseMessageHandler
     init (baseHandler: BaseMessageHandler) {

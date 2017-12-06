@@ -321,7 +321,7 @@ struct BaseMessageLayoutModel {
         let bubbleView = parameters.bubbleView
         let horizontalMargin = parameters.horizontalMargin
         let horizontalInterspacing = parameters.horizontalInterspacing
-
+        
         let preferredWidthForBubble = containerWidth * parameters.maxContainerWidthPercentageForBubbleView
         let bubbleSize = bubbleView.sizeThatFits(CGSize(width: preferredWidthForBubble, height: CGFloat.max))
         let containerRect = CGRect(origin: CGPoint.zero, size: CGSize(width: containerWidth, height: bubbleSize.height))

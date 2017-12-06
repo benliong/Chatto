@@ -81,7 +81,13 @@ class DemoChatViewController: ChatViewController {
                     interactionHandler: PhotoMessageHandler(baseHandler: self.baseMessageHandler)
                 )
             ],
-            SendingStatusModel.chatItemType: [SendingStatusPresenterBuilder()]
+            SendingStatusModel.chatItemType: [SendingStatusPresenterBuilder()],
+            SystemMessageModel.chatItemType: [
+                SystemMessagePresenterBuilder(
+                    viewModelBuilder: SystemMessageViewModelDefaultBuilder(),
+                    interactionHandler: SystemMessageHandler(baseHandler: self.baseMessageHandler)
+                )
+            ]
         ]
     }
 

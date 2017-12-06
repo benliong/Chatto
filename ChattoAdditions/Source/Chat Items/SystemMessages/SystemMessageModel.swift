@@ -22,33 +22,22 @@
  THE SOFTWARE.
 */
 
-import UIKit
+import Foundation
 
-class ConversationsViewController: UITableViewController {
+public protocol SystemMessageModelProtocol: DecoratedMessageModelProtocol {
+    var text: String { get }
+}
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-
-        var initialCount = 0
-        let pageSize = 50
-
-        var dataSource: FakeDataSource!
-        if segue.identifier == "0 messages" {
-            initialCount = 0
-        } else if segue.identifier == "2 messages" {
-            initialCount = 1
-        } else if segue.identifier == "10000 messages" {
-            initialCount = 10000
-        } else if segue.identifier == "overview" {
-            dataSource = FakeDataSource(messages: TutorialMessageFactory.createMessages().map { $0 }, pageSize: pageSize)
-        } else {
-            assert(false, "segue not handled!")
-        }
-
-        let chatController = segue.destinationViewController as! DemoChatViewController
-        if dataSource == nil {
-            dataSource = FakeDataSource(count: initialCount, pageSize: pageSize)
-        }
-        chatController.dataSource = dataSource
-        chatController.messageSender = dataSource.messageSender
+public class SystemMessageModel: SystemMessageModelProtocol {
+    public let messageModel: MessageModelProtocol
+    public let text: String
+    public let ctaType: String?
+    public init(messageModel: MessageModelProtocol, text: String, ctaType:String? = nil) {
+        self.messageModel = messageModel
+        self.text = text
+        self.ctaType = ctaType
     }
+    // This should be covered by DecoratedMessageModelProtocol, but compiler crashes without this (Xcode 7.1)
+    public var uid: String { return self.messageModel.uid }
+
 }
