@@ -173,10 +173,6 @@ public final class SystemBubbleView: UIView, MaximumLayoutWidthSpecificable, Bac
         let layout = self.calculateTextBubbleLayout(preferredMaxLayoutWidth: self.preferredMaxLayoutWidth)
         self.textView.bma_rect = layout.textFrame
         self.bubbleImageView.bma_rect = layout.bubbleFrame
-//        self.textView.backgroundColor = UIColor.purpleColor()
-        debugPrint("Bubble Image View Frame = \(self.bubbleImageView.frame)")
-        debugPrint("TextView          Frame = \(self.textView.frame)")
-        debugPrint("PreferredMaxLayoutWidth = \(self.preferredMaxLayoutWidth)")
         self.textView.textAlignment = .Center
         self.backgroundColor = UIColor.bma_color(rgb: 0xDEF1E2)
     }
