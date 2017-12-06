@@ -29,24 +29,44 @@ public protocol SystemMessageViewModelProtocol: TextMessageViewModelProtocol {
 }
 
 public class SystemMessageViewModel: SystemMessageViewModelProtocol {
-    public let text: String
+    private var _text: String
+    public var text: String {
+        get {
+            var t = _text
+            if let title = title {
+                t = "\(title)\n\n\(t)"
+            }
+            if let ctaText = ctaText {
+                t = t.stringByAppendingString("\n\n\(ctaText)")
+            }
+            return t
+        }
+        set { _text = newValue }
+    }
+    public let title: String?
+    public let ctaText: String?
+    public let ctaURLString: String?
     public var attributedString: NSAttributedString {
         var string = NSMutableAttributedString()
         if #available(iOS 8.2, *) {
             string = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName:UIFont.systemFontOfSize(12, weight: UIFontWeightRegular), NSForegroundColorAttributeName: UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)])
-            var range = NSString(string: text).rangeOfString("SYSTEM MESSAGE")
-            if range.location != NSNotFound {
-                string.setAttributes([NSFontAttributeName:UIFont.systemFontOfSize(10, weight: UIFontWeightMedium), NSForegroundColorAttributeName: UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)], range: range)
+            if let title = title {
+                var range = NSString(string: text).rangeOfString(title)
+                if range.location != NSNotFound {
+                    string.setAttributes([NSFontAttributeName:UIFont.systemFontOfSize(10, weight: UIFontWeightMedium), NSForegroundColorAttributeName: UIColor(red: 78.0 / 255.0, green: 81.0 / 255.0, blue: 94.0 / 255.0, alpha: 1.0)], range: range)
+                }
             }
-            var range2 = NSString(string: text).rangeOfString("LEARN MORE ABOUT LOCKERS")
-            if range2.location != NSNotFound {
-                string.addAttribute(NSLinkAttributeName, value: "http://www.google.com", range: range2)
-                string.enumerateAttributesInRange(range2, options: .Reverse, usingBlock: { (attributes, range, stop) in
-                    if let _ = attributes[NSLinkAttributeName] {
-                        string.removeAttribute(NSFontAttributeName, range: range)
-                        string.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(14, weight: UIFontWeightMedium), range: range2)
-                    }
-                })
+            if let ctaText = ctaText, let ctaURLString = ctaURLString {
+                var range2 = NSString(string: text).rangeOfString(ctaText)
+                if range2.location != NSNotFound {
+                    string.addAttribute(NSLinkAttributeName, value: ctaURLString, range: range2)
+                    string.enumerateAttributesInRange(range2, options: .Reverse, usingBlock: { (attributes, range, stop) in
+                        if let _ = attributes[NSLinkAttributeName] {
+                            string.removeAttribute(NSFontAttributeName, range: range)
+                            string.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(14, weight: UIFontWeightMedium), range: range2)
+                        }
+                    })
+                }
             }
         } else {
             // Fallback on earlier versions
@@ -55,8 +75,11 @@ public class SystemMessageViewModel: SystemMessageViewModelProtocol {
     }
     public let messageViewModel: MessageViewModelProtocol
 
-    public init(text: String, messageViewModel: MessageViewModelProtocol) {
-        self.text = text
+    public init(text: String, title:String?, ctaText:String?, ctaURLString:String?, messageViewModel: MessageViewModelProtocol) {
+        self._text = text
+        self.title = title
+        self.ctaText = ctaText
+        self.ctaURLString = ctaURLString
         self.messageViewModel = messageViewModel
     }
 }
@@ -68,7 +91,7 @@ public class SystemMessageViewModelDefaultBuilder: ViewModelBuilderProtocol {
 
     public func createViewModel(model: SystemMessageModel) -> SystemMessageViewModel {
         let messageViewModel = self.messageViewModelBuilder.createMessageViewModel(model)
-        let systemMessageViewModel =  SystemMessageViewModel(text: model.text, messageViewModel: messageViewModel)
+        let systemMessageViewModel =  SystemMessageViewModel(text: model.text, title: model.title, ctaText: model.ctaText, ctaURLString: model.ctaURLString, messageViewModel: messageViewModel)
         return systemMessageViewModel
     }
 }

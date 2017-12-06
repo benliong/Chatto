@@ -31,11 +31,15 @@ public protocol SystemMessageModelProtocol: DecoratedMessageModelProtocol {
 public class SystemMessageModel: SystemMessageModelProtocol {
     public let messageModel: MessageModelProtocol
     public let text: String
-    public let ctaType: String?
-    public init(messageModel: MessageModelProtocol, text: String, ctaType:String? = nil) {
+    public let title: String?
+    public let ctaText: String?
+    public let ctaURLString: String?
+    public init(messageModel: MessageModelProtocol, text: String, title:String?, ctaText:String?, ctaURLString:String?) {
         self.messageModel = messageModel
         self.text = text
-        self.ctaType = ctaType
+        self.title = title
+        self.ctaText = ctaText
+        self.ctaURLString = ctaURLString
     }
     // This should be covered by DecoratedMessageModelProtocol, but compiler crashes without this (Xcode 7.1)
     public var uid: String { return self.messageModel.uid }

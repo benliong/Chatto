@@ -33,9 +33,9 @@ extension Array {
     }
 }
 
-func createSystemMessageModel(uid:String, text: String, ctaType: String? = nil) -> SystemMessageModel {
+func createSystemMessageModel(uid:String, text: String, title:String?, ctaText: String?, ctaURLString:String?) -> SystemMessageModel {
     let messageModel = createMessageModel(uid, isIncoming: true, type: SystemMessageModel.chatItemType)
-    let systemMessageModel = SystemMessageModel(messageModel: messageModel, text: text, ctaType: ctaType)
+    let systemMessageModel = SystemMessageModel(messageModel: messageModel, text: text, title: title, ctaText: ctaText, ctaURLString: ctaURLString)
     return systemMessageModel
 }
 
@@ -64,7 +64,7 @@ class FakeMessageFactory {
     ]
     
     static let systemTexts = [
-        "SYSTEM MESSAGE\n\n⚠️ Benjimaru (Owner) has not deposited the item within the booked time. Please chat to arrange alternative pick-up arrangement.\n\nLEARN MORE ABOUT LOCKERS",
+        "⚠️ Benjimaru (Owner) has not deposited the item within the booked time. Please chat to arrange alternative pick-up arrangement.",
     ]
 
     class func createChatItem(uid: String) -> MessageModelProtocol {
@@ -89,9 +89,8 @@ class FakeMessageFactory {
     }
     
     class func createSystemMessageModel(uid: String) -> SystemMessageModel {
-        let showCTA:Bool = arc4random_uniform(100) % 2 == 0
         let text = self.systemTexts.first!
-        return ChattoApp.createSystemMessageModel(uid, text: text, ctaType: showCTA ? "PPB_LEARN_MORE" : nil)
+        return ChattoApp.createSystemMessageModel(uid, text: text, title: "系統訊息", ctaText: "了解更多", ctaURLString: "http://www.marco.org")
     }
     
     class func createPhotoMessageModel(uid: String, isIncoming: Bool) -> PhotoMessageModel {
