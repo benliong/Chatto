@@ -236,9 +236,9 @@ private final class SystemBubbleLayoutModel {
         let textHorizontalInset = self.layoutContext.textInsets.bma_horziontalInset
         let maxTextWidth = self.layoutContext.preferredMaxLayoutWidth
         let textSize = self.textSizeThatFitsWidth(maxTextWidth)
-        let bubbleSize = CGSize(width: maxTextWidth, height: textSize.height+20)
+        let bubbleSize = CGSize(width: maxTextWidth, height: textSize.height + 20)
         self.bubbleFrame = CGRect(origin: CGPoint.zero, size: bubbleSize)
-        self.textFrame = UIEdgeInsetsInsetRect(CGRect(origin: CGPoint.zero, size: CGSize(width: textSize.width, height: textSize.height+20)), UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8))
+        self.textFrame = UIEdgeInsetsInsetRect(CGRect(origin: CGPoint.zero, size: CGSize(width: textSize.width, height: textSize.height + 40)), UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8))
         self.textFrame = CGRect(x: self.textFrame.origin.x, y: self.textFrame.origin.y, width: maxTextWidth - 16, height: self.textFrame.size.height)
         self.size = bubbleSize
     }
